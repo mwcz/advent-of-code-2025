@@ -32,6 +32,13 @@ impl<T: Copy> Grid<T> {
         self.cells.get(y).and_then(|row| row.get(x)).copied()
     }
 
+    pub fn getp(&self, p: Point<2>) -> Option<T> {
+        self.cells
+            .get(p.y() as usize)
+            .and_then(|row| row.get(p.x() as usize))
+            .copied()
+    }
+
     pub fn cols(&self) -> Vec<Vec<T>> {
         (0..self.cells[0].len())
             .map(|x| (0..self.cells.len()).map(|y| self.cells[y][x]).collect())
@@ -55,6 +62,23 @@ impl<T: Copy> Grid<T> {
             self.cells[row_idx][i] = *t;
         }
     }
+
+    /// Set data in the grid.  Panics if the coordinates are out of bounds.
+    pub fn set(&mut self, x: usize, y: usize, new_data: T) {
+        assert!(y < self.cells.len());
+        assert!(x < self.cells[0].len());
+        self.cells[y][x] = new_data;
+    }
+
+    /// Set data in the grid using a Point as coordinates.  Panics if the coordinates are out of bounds.
+    pub fn setp(&mut self, p: Point<2>, new_data: T) {
+        assert!(p.x() > 0);
+        assert!(p.y() > 0);
+        assert!((p.y() as usize) < self.cells.len());
+        assert!((p.x() as usize) < self.cells[0].len());
+        self.cells[p.y() as usize][p.x() as usize] = new_data;
+    }
+
     /// Get cells adjacent to the given point in the cardinal directions.  Origin is up-left from
     /// the given point.  Cells outside the grid bounds will be None.
     ///
@@ -67,19 +91,19 @@ impl<T: Copy> Grid<T> {
     /// ```
     ///
     /// In words: up left, up, up right, left, right, down left, down, down right.
-    pub fn adj_4(&self, x: usize, y: usize) -> Adj4<T> {
+    pub fn adj_4(&self, loc: Point<2>) -> Adj4<T> {
         Adj4::new(
             [
-                (Some(x), y.checked_sub(1)),
-                (x.checked_sub(1), Some(y)),
-                (x.checked_add(1), Some(y)),
-                (Some(x), y.checked_add(1)),
+                (Some(loc.x()), loc.y().checked_sub(1)),
+                (loc.x().checked_sub(1), Some(loc.y())),
+                (loc.x().checked_add(1), Some(loc.y())),
+                (Some(loc.x()), loc.y().checked_add(1)),
             ]
             .map(|(adj_x, adj_y)| {
                 adj_x.and_then(|adj_x| {
                     adj_y.and_then(|adj_y| {
-                        self.cells.get(adj_y).and_then(|row| {
-                            row.get(adj_x)
+                        self.cells.get(adj_y as usize).and_then(|row| {
+                            row.get(adj_x as usize)
                                 .map(|cell_data| Cell::new([adj_x, adj_y].into(), *cell_data))
                         })
                     })
@@ -128,6 +152,25 @@ impl<T: Copy> Grid<T> {
                 })
             }),
         )
+    }
+}
+
+impl<T: Copy + PartialEq> Grid<T> {
+    pub fn match_kernel<const D: usize>(&self, kernel: [[Option<T>; D]; D], pos: Point<2>) -> bool {
+        for ky in 0..D {
+            for kx in 0..D {
+                if let Some(k) = kernel[ky][kx] {
+                    if self
+                        .get(pos.x() as usize + kx, pos.y() as usize + ky)
+                        .and_then(|c| (c == k).then_some(()))
+                        .is_none()
+                    {
+                        return false;
+                    }
+                }
+            }
+        }
+        true
     }
 }
 
