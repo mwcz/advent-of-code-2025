@@ -1,7 +1,6 @@
 mod args;
 
 use std::{fmt::Display, fs::read_to_string, process::exit, time::Instant};
-
 use termion::{color, style};
 
 fn main() {
@@ -13,7 +12,7 @@ fn main() {
 
     // day 255 is a magic day number meaning "run all days"
     if args.day == 255 {
-        for day in 1..=25 {
+        for day in 1..=12 {
             let input = read_to_string(format!("./input/d{}", day));
             if let Ok(input) = input {
                 run(day, 1, input.clone());
@@ -23,7 +22,7 @@ fn main() {
                 print_part(day, 2, Instant::now(), "no input");
             }
         }
-    } else if (1..=25).contains(&args.day) {
+    } else if (1..=12).contains(&args.day) {
         let input_file = if args.input.is_some() {
             args.input.unwrap()
         } else if args.example {
@@ -47,7 +46,7 @@ fn main() {
             );
         }
     } else {
-        eprintln!("Error: DAY must be 1 through 25, or 255 to run all days");
+        eprintln!("Error: DAY must be 1 through 12, or 255 to run all days");
     }
 }
 
@@ -161,12 +160,12 @@ fn run(day: u8, part: u8, input: String) {
         }
         (11, 1) => {
             let parsed = aoc2025::d11::parse(input);
-            let output = aoc2025::d11::part1::<25>(parsed);
+            let output = aoc2025::d11::part1(parsed);
             print_part(day, part, t, output);
         }
         (11, 2) => {
             let parsed = aoc2025::d11::parse(input);
-            let output = aoc2025::d11::part2::<75>(parsed);
+            let output = aoc2025::d11::part2(parsed);
             print_part(day, part, t, output);
         }
         (12, 1) => {
@@ -177,136 +176,6 @@ fn run(day: u8, part: u8, input: String) {
         (12, 2) => {
             let parsed = aoc2025::d12::parse(input);
             let output = aoc2025::d12::part2(parsed);
-            print_part(day, part, t, output);
-        }
-        (13, 1) => {
-            let parsed = aoc2025::d13::parse(input);
-            let output = aoc2025::d13::part1(parsed);
-            print_part(day, part, t, output);
-        }
-        (13, 2) => {
-            let parsed = aoc2025::d13::parse(input);
-            let output = aoc2025::d13::part2(parsed);
-            print_part(day, part, t, output);
-        }
-        (14, 1) => {
-            let parsed = aoc2025::d14::parse(input);
-            let output = aoc2025::d14::part1(parsed);
-            print_part(day, part, t, output);
-        }
-        (14, 2) => {
-            let parsed = aoc2025::d14::parse(input);
-            let output = aoc2025::d14::part2(parsed);
-            print_part(day, part, t, output);
-        }
-        (15, 1) => {
-            let parsed = aoc2025::d15::parse(input);
-            let output = aoc2025::d15::part1(parsed);
-            print_part(day, part, t, output);
-        }
-        (15, 2) => {
-            let parsed = aoc2025::d15::parse(input);
-            let output = aoc2025::d15::part2(parsed);
-            print_part(day, part, t, output);
-        }
-        (16, 1) => {
-            let parsed = aoc2025::d16::parse(input);
-            let output = aoc2025::d16::part1(parsed);
-            print_part(day, part, t, output);
-        }
-        (16, 2) => {
-            let parsed = aoc2025::d16::parse(input);
-            let output = aoc2025::d16::part2(parsed);
-            print_part(day, part, t, output);
-        }
-        (17, 1) => {
-            let parsed = aoc2025::d17::parse(input);
-            let output = aoc2025::d17::part1(parsed);
-            print_part(day, part, t, output);
-        }
-        (17, 2) => {
-            let parsed = aoc2025::d17::parse(input);
-            let output = aoc2025::d17::part2(parsed);
-            print_part(day, part, t, output);
-        }
-        (18, 1) => {
-            let parsed = aoc2025::d18::parse(input);
-            let output = aoc2025::d18::part1(parsed);
-            print_part(day, part, t, output);
-        }
-        (18, 2) => {
-            let parsed = aoc2025::d18::parse(input);
-            let output = aoc2025::d18::part2(parsed);
-            print_part(day, part, t, output);
-        }
-        (19, 1) => {
-            let parsed = aoc2025::d19::parse(input);
-            let output = aoc2025::d19::part1(parsed);
-            print_part(day, part, t, output);
-        }
-        (19, 2) => {
-            let parsed = aoc2025::d19::parse(input);
-            let output = aoc2025::d19::part2(parsed);
-            print_part(day, part, t, output);
-        }
-        (20, 1) => {
-            let parsed = aoc2025::d20::parse(input);
-            let output = aoc2025::d20::part1(parsed);
-            print_part(day, part, t, output);
-        }
-        (20, 2) => {
-            let parsed = aoc2025::d20::parse(input);
-            let output = aoc2025::d20::part2(parsed);
-            print_part(day, part, t, output);
-        }
-        (21, 1) => {
-            let parsed = aoc2025::d21::parse(input);
-            let output = aoc2025::d21::part1(parsed);
-            print_part(day, part, t, output);
-        }
-        (21, 2) => {
-            let parsed = aoc2025::d21::parse(input);
-            let output = aoc2025::d21::part2(parsed);
-            print_part(day, part, t, output);
-        }
-        (22, 1) => {
-            let parsed = aoc2025::d22::parse(input);
-            let output = aoc2025::d22::part1(parsed);
-            print_part(day, part, t, output);
-        }
-        (22, 2) => {
-            let parsed = aoc2025::d22::parse(input);
-            let output = aoc2025::d22::part2(parsed);
-            print_part(day, part, t, output);
-        }
-        (23, 1) => {
-            let parsed = aoc2025::d23::parse(input);
-            let output = aoc2025::d23::part1(parsed);
-            print_part(day, part, t, output);
-        }
-        (23, 2) => {
-            let parsed = aoc2025::d23::parse(input);
-            let output = aoc2025::d23::part2(parsed);
-            print_part(day, part, t, output);
-        }
-        (24, 1) => {
-            let parsed = aoc2025::d24::parse(input);
-            let output = aoc2025::d24::part1(parsed);
-            print_part(day, part, t, output);
-        }
-        (24, 2) => {
-            let parsed = aoc2025::d24::parse(input);
-            let output = aoc2025::d24::part2(parsed);
-            print_part(day, part, t, output);
-        }
-        (25, 1) => {
-            let parsed = aoc2025::d25::parse(input);
-            let output = aoc2025::d25::part1(parsed);
-            print_part(day, part, t, output);
-        }
-        (25, 2) => {
-            let parsed = aoc2025::d25::parse(input);
-            let output = aoc2025::d25::part2(parsed);
             print_part(day, part, t, output);
         }
         _ => unimplemented!(),
