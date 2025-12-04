@@ -3,6 +3,8 @@
 
 use std::ops::RangeInclusive;
 
+use crate::digits::digit_count_i64;
+
 type Model = Vec<(i64, i64)>;
 type Answer = i64;
 
@@ -16,12 +18,8 @@ pub fn parse(input: String) -> Model {
         .collect::<Vec<_>>()
 }
 
-fn digit_count(n: i64) -> u32 {
-    n.ilog10() + 1
-}
-
 fn is_invalid_p1(n: i64) -> bool {
-    let dc = digit_count(n);
+    let dc = digit_count_i64(n);
     if dc.is_multiple_of(2) {
         let upper = n / 10_i64.pow(dc / 2);
         let lower = n - upper * 10_i64.pow(dc / 2);
@@ -47,7 +45,7 @@ pub fn part1(model: Model) -> Answer {
 }
 
 fn is_invalid_p2(n: i64) -> bool {
-    let dc = digit_count(n);
+    let dc = digit_count_i64(n);
     for repeats in 2..=dc {
         if dc.is_multiple_of(repeats) {
             let patlen = dc / repeats;
