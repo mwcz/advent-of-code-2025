@@ -1,9 +1,8 @@
 //! A solution to day 2 year 2025.
 //! https://adventofcode.com/2025/day/2
 
+use crate::digits::count::digit_count;
 use std::ops::RangeInclusive;
-
-use crate::digits::digit_count_i64;
 
 type Model = Vec<(i64, i64)>;
 type Answer = i64;
@@ -19,7 +18,7 @@ pub fn parse(input: String) -> Model {
 }
 
 fn is_invalid_p1(n: i64) -> bool {
-    let dc = digit_count_i64(n);
+    let dc = digit_count(n);
     if dc.is_multiple_of(2) {
         let upper = n / 10_i64.pow(dc / 2);
         let lower = n - upper * 10_i64.pow(dc / 2);
@@ -45,7 +44,7 @@ pub fn part1(model: Model) -> Answer {
 }
 
 fn is_invalid_p2(n: i64) -> bool {
-    let dc = digit_count_i64(n);
+    let dc = digit_count(n);
     for repeats in 2..=dc {
         if dc.is_multiple_of(repeats) {
             let patlen = dc / repeats;
